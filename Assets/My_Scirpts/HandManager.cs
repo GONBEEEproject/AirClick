@@ -16,6 +16,8 @@ public class HandManager : MonoBehaviour {
     private GameObject bulletMother;
     private bool isShot = false;
 
+    private bool waitForShot = false;
+
     [SerializeField]
     private GameObject bulletPrefab;
 
@@ -55,6 +57,7 @@ public class HandManager : MonoBehaviour {
     //手だして
     private void InteractionSourceUpdated(InteractionSourceUpdatedEventArgs eventArgs)
     {
+        waitForShot = true;
         for (int i = 0; i < renderers.Length; i++)
         {
             renderers[i].enabled = false;
@@ -92,6 +95,7 @@ public class HandManager : MonoBehaviour {
     {
         //handRenderer.enabled = false;
         handObj.SetActive(false);
+        waitForShot = false;
     }
 
     // Update is called once per frame
@@ -106,13 +110,16 @@ public class HandManager : MonoBehaviour {
             //handRenderer.enabled = isHand;
             //handObj.SetActive(isHand);
 
-            if (!isShot)
+            if (waitForShot)
             {
-                Shoot();
-            }
-            else
-            {
-                Reload();
+                if (!isShot)
+                {
+                    Shoot();
+                }
+                else
+                {
+                    Reload();
+                }
             }
         }
 
