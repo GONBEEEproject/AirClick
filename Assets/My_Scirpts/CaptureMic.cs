@@ -7,9 +7,10 @@ public class CaptureMic : MonoBehaviour {
     private AudioSource AS;
 
     [SerializeField]
-    private GameObject cube;
+    private GameObject handObj;
+    private MeshRenderer handRenderer;
 
-    private bool isCube=false;
+    private bool isHand=false;
 
 	// Use this for initialization
 	void Start () {
@@ -20,17 +21,19 @@ public class CaptureMic : MonoBehaviour {
         while (!(Microphone.GetPosition("") > 0)) { }
         AS.Play();
 
+        handRenderer = GetComponent<MeshRenderer>();
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
         float vol = GetAverageVolume();
-        Debug.Log(vol);
+        //Debug.Log(vol);
 
         if (vol > 0.05)
         {
-            isCube=!isCube;
-            cube.SetActive(isCube);
+            isHand=!isHand;
+            handRenderer.enabled = isHand;
         }
 
 	}
